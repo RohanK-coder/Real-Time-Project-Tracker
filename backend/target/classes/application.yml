@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/trackerdb
+    username: tracker
+    password: tracker
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: 0123456789012345678901234567890123456789012345678901234567890123
+    expiration-ms: 86400000

@@ -84,7 +84,7 @@ export default function TaskBoard() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
+      <div className="mx-auto max-w-9xl p-4 sm:p-6 lg:p-8">
         <Card className="overflow-hidden border-0 shadow-lg">
           <div className="bg-slate-950 px-6 py-8 text-white">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">

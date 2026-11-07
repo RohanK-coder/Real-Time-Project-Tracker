@@ -1,0 +1,100 @@
+{
+  "config": {
+    "VIEWERS": 1000,
+    "WRITERS": 20,
+    "READERS": 20,
+    "DURATION": "2m",
+    "WS_TARGETS": [
+      "ws://tracker-backend-1:8080/ws",
+      "ws://tracker-backend-2:8080/ws"
+    ],
+    "BASE": "http://web"
+  },
+  "http": {
+    "create": {
+      "avg": 41.75649334713706,
+      "med": 26.735604000000002,
+      "p90": 93.4266045,
+      "p95": 129.51989575,
+      "p99": 213.46776059999988,
+      "max": 452.662334,
+      "count": 1956
+    },
+    "update": {
+      "avg": 40.963542499488845,
+      "med": 26.83325,
+      "p90": 87.237979,
+      "p95": 121.8898329999999,
+      "p99": 234.82557904999987,
+      "max": 479.433042,
+      "count": 1956
+    },
+    "move": {
+      "avg": 35.876203731595076,
+      "med": 23.6336045,
+      "p90": 75.71314600000002,
+      "p95": 107.947063,
+      "p99": 172.30630814999998,
+      "max": 299.293875,
+      "count": 1956
+    },
+    "search": {
+      "avg": 29.332585524954656,
+      "med": 18.8339375,
+      "p90": 65.09862940000001,
+      "p95": 86.87103754999994,
+      "p99": 166.04154399,
+      "max": 372.161751,
+      "count": 2204
+    }
+  },
+  "http_reqs": {
+    "count": 11155,
+    "rate": 67.67632705339761
+  },
+  "http_req_failed": {
+    "rate": 0,
+    "passes": 0,
+    "fails": 11155
+  },
+  "ws_delivery_ms": {
+    "avg": 311.83882234151326,
+    "med": 130,
+    "p90": 837,
+    "p95": 1193,
+    "p99": 2193,
+    "max": 6263,
+    "count": 3912000
+  },
+  "ws_events_received": {
+    "count": 5476000,
+    "rate": 33222.37265301706
+  },
+  "ws_out_of_order": {
+    "count": 91733,
+    "rate": 556.53541098963
+  },
+  "ws_missing_events": {
+    "count": 0,
+    "rate": 0
+  },
+  "ws_connected": {
+    "rate": 1,
+    "passes": 1000,
+    "fails": 0
+  },
+  "write_conflicts": {
+    "count": 392,
+    "rate": 2.3782268224950127
+  },
+  "thresholds_passed": {
+    "http_req_duration{op:move}": true,
+    "http_req_duration{op:search}": true,
+    "ws_missing_events": true,
+    "http_req_duration{op:create}": true,
+    "http_req_duration{op:update}": true,
+    "ws_connected": true,
+    "http_req_failed": true,
+    "ws_delivery_ms": false
+  }
+}

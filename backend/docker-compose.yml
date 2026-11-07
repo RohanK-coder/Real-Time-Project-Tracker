@@ -1,15 +1,20 @@
-version: '3.9'
+# Local development dependencies. Run the backend with ./mvnw spring-boot:run.
+# For the full production-like stack (2 backend replicas + nginx + frontend) see ../deploy/.
 services:
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_DB: trackerdb
+      POSTGRES_DB: tracker
       POSTGRES_USER: tracker
       POSTGRES_PASSWORD: tracker
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - tracker-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tracker -d tracker"]
+      interval: 5s
+      retries: 10
 
   redis:
     image: redis:7
@@ -17,4 +22,4 @@ services:
       - "6379:6379"
 
 volumes:
-  pgdata:
+  tracker-pgdata:

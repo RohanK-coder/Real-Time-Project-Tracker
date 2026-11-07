@@ -1,0 +1,16 @@
+== tracker-backend-1
+hikaricp_connections_active{application="tracker-backend",pool="HikariPool-1"} 0.0
+hikaricp_connections_pending{application="tracker-backend",pool="HikariPool-1"} 0.0
+jvm_threads_live_threads{application="tracker-backend"} 80.0
+process_cpu_usage{application="tracker-backend"} 0.03379721669980119
+tracker_realtime_published_total{application="tracker-backend",kind="BOARD_EVENT"} 3581.0
+tracker_realtime_published_total{application="tracker-backend",kind="USER_NOTIFICATION"} 238.0
+tracker_websocket_sessions{application="tracker-backend"} 0.0
+== tracker-backend-2
+hikaricp_connections_active{application="tracker-backend",pool="HikariPool-1"} 0.0
+hikaricp_connections_pending{application="tracker-backend",pool="HikariPool-1"} 0.0
+jvm_threads_live_threads{application="tracker-backend"} 80.0
+process_cpu_usage{application="tracker-backend"} 0.03059490084985836
+tracker_realtime_published_total{application="tracker-backend",kind="BOARD_EVENT"} 3531.0
+tracker_realtime_published_total{application="tracker-backend",kind="USER_NOTIFICATION"} 232.0
+tracker_websocket_sessions{application="tracker-backend"} 0.0

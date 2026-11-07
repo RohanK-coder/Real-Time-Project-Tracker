@@ -1,0 +1,100 @@
+{
+  "config": {
+    "VIEWERS": 1000,
+    "WRITERS": 20,
+    "READERS": 20,
+    "DURATION": "1m",
+    "WS_TARGETS": [
+      "ws://tracker-backend-1:8080/ws",
+      "ws://tracker-backend-2:8080/ws"
+    ],
+    "BASE": "http://web"
+  },
+  "http": {
+    "create": {
+      "avg": 32.22707397900761,
+      "med": 16.203937500000002,
+      "p90": 71.1228207,
+      "p95": 105.86601884999996,
+      "p99": 284.14730499999996,
+      "max": 609.467125,
+      "count": 1048
+    },
+    "update": {
+      "avg": 29.92832118702294,
+      "med": 17.752021,
+      "p90": 64.16668370000001,
+      "p95": 92.25451205,
+      "p99": 195.35538449999993,
+      "max": 358.450917,
+      "count": 1048
+    },
+    "move": {
+      "avg": 27.09530551717559,
+      "med": 16.374146,
+      "p90": 56.22139610000001,
+      "p95": 80.59294594999996,
+      "p99": 181.01144422,
+      "max": 228.247459,
+      "count": 1048
+    },
+    "search": {
+      "avg": 18.72270935013035,
+      "med": 11.297083,
+      "p90": 42.912041,
+      "p95": 55.27058299999999,
+      "p99": 100.17270849999998,
+      "max": 356.990583,
+      "count": 1151
+    }
+  },
+  "http_reqs": {
+    "count": 7378,
+    "rate": 70.30752403818676
+  },
+  "http_req_failed": {
+    "rate": 0,
+    "passes": 0,
+    "fails": 7378
+  },
+  "ws_delivery_ms": {
+    "avg": 114.30021135496183,
+    "med": 49,
+    "p90": 305,
+    "p95": 472,
+    "p99": 813,
+    "max": 1951,
+    "count": 2096000
+  },
+  "ws_events_received": {
+    "count": 2934000,
+    "rate": 27959.104842510154
+  },
+  "ws_out_of_order": {
+    "count": 38076,
+    "rate": 362.83942603388437
+  },
+  "ws_missing_events": {
+    "count": 0,
+    "rate": 0
+  },
+  "ws_connected": {
+    "fails": 0,
+    "rate": 1,
+    "passes": 1000
+  },
+  "write_conflicts": {
+    "count": 210,
+    "rate": 2.001162923288048
+  },
+  "thresholds_passed": {
+    "http_req_duration{op:move}": true,
+    "http_req_failed": true,
+    "ws_missing_events": true,
+    "ws_connected": true,
+    "http_req_duration{op:update}": true,
+    "http_req_duration{op:search}": true,
+    "ws_delivery_ms": true,
+    "http_req_duration{op:create}": true
+  }
+}

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import api from '../../lib/api'
+import api, { errorMessage } from '../../lib/api'
 
 const initialState = {
   token: localStorage.getItem('token'),
@@ -9,21 +9,19 @@ const initialState = {
   error: null,
 }
 
-export const login = createAsyncThunk('auth/login', async (payload, thunkAPI) => {
+export const login = createAsyncThunk('auth/login', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await api.post('/auth/login', payload)
-    return data
+    return (await api.post('/auth/login', payload)).data
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.response?.data?.error || 'Login failed')
+    return rejectWithValue(errorMessage(error, 'Login failed'))
   }
 })
 
-export const register = createAsyncThunk('auth/register', async (payload, thunkAPI) => {
+export const register = createAsyncThunk('auth/register', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await api.post('/auth/register', payload)
-    return data
+    return (await api.post('/auth/register', payload)).data
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.response?.data?.error || 'Registration failed')
+    return rejectWithValue(errorMessage(error, 'Registration failed'))
   }
 })
 
@@ -35,27 +33,23 @@ const authSlice = createSlice({
       state.token = null
       state.username = null
       state.role = null
-      localStorage.clear()
+      localStorage.removeItem('token')
+      localStorage.removeItem('username')
+      localStorage.removeItem('role')
     },
   },
   extraReducers: (builder) => {
-    const fulfilled = (state, action) => {
-      state.loading = false
-      state.error = null
-      state.token = action.payload.token
-      state.username = action.payload.username
-      state.role = action.payload.role
-      localStorage.setItem('token', action.payload.token)
-      localStorage.setItem('username', action.payload.username)
-      localStorage.setItem('role', action.payload.role)
+    const fulfilled = (state, { payload }) => {
+      Object.assign(state, { loading: false, error: null, token: payload.token, username: payload.username, role: payload.role })
+      localStorage.setItem('token', payload.token)
+      localStorage.setItem('username', payload.username)
+      localStorage.setItem('role', payload.role)
     }
+    const pending = (state) => { state.loading = true; state.error = null }
+    const rejected = (state, action) => { state.loading = false; state.error = action.payload }
     builder
-      .addCase(login.pending, (state) => { state.loading = true; state.error = null })
-      .addCase(login.fulfilled, fulfilled)
-      .addCase(login.rejected, (state, action) => { state.loading = false; state.error = action.payload })
-      .addCase(register.pending, (state) => { state.loading = true; state.error = null })
-      .addCase(register.fulfilled, fulfilled)
-      .addCase(register.rejected, (state, action) => { state.loading = false; state.error = action.payload })
+      .addCase(login.pending, pending).addCase(login.fulfilled, fulfilled).addCase(login.rejected, rejected)
+      .addCase(register.pending, pending).addCase(register.fulfilled, fulfilled).addCase(register.rejected, rejected)
   },
 })
 

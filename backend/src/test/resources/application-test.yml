@@ -1,0 +1,8 @@
+app:
+  seed:
+    demo: false
+  rate-limit:
+    login-per-minute: 0
+logging:
+  level:
+    org.springframework.web.socket: WARN

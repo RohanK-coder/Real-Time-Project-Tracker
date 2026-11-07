@@ -14,25 +14,40 @@ public class Task {
     private Long id;
 
     @Column(nullable = false)
+    private Long boardId;
+
+    @Column(nullable = false)
     private String title;
 
-    @Column(length = 4000)
     private String description;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TaskStatus status;
 
+    private String assignee;
+
     @Column(nullable = false)
     private String createdBy;
 
-    private String assignee;
+    @Column(nullable = false)
+    private String updatedBy;
 
     @Column(nullable = false)
     private Instant createdAt;
 
     @Column(nullable = false)
     private Instant updatedAt;
+
+    /** Optimistic lock. Clients must send the version they edited; a mismatch is a 409. */
+    @Version
+    private Long version;
+
+    @Column(nullable = false)
+    private long lastEventSeq;
+
+    @Column(nullable = false)
+    private boolean deleted;
 
     private String githubIssueUrl;
 }

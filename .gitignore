@@ -1,0 +1,16 @@
+# Build output
+backend/target/
+frontend/dist/
+node_modules/
+
+# Local env / secrets
+.env
+*.env.local
+deploy/.env
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+

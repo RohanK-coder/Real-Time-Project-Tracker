@@ -1,24 +1,97 @@
 spring:
+  application:
+    name: tracker-backend
   datasource:
-    url: jdbc:postgresql://localhost:5432/trackerdb
-    username: tracker
-    password: tracker
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5434/tracker}
+    username: ${DATABASE_USERNAME:tracker}
+    password: ${DATABASE_PASSWORD:tracker}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:20}
   jpa:
+    # Schema is owned by Flyway (src/main/resources/db/migration); Hibernate only validates it.
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+    open-in-view: false
     properties:
       hibernate:
-        format_sql: true
-    open-in-view: false
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      ssl:
+        enabled: ${REDIS_SSL:false}
+      timeout: 2s
+  cache:
+    type: redis
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  threads:
+    virtual:
+      enabled: true
 
 server:
-  port: 8080
+  port: ${PORT:8080}
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        readiness:
+          # DB down -> stop routing here. Redis is deliberately excluded: the app degrades
+          # gracefully without it (see docs/DEPLOYMENT.md), so it must not drain every replica.
+          include: readinessState,db
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+    tags:
+      application: ${spring.application.name}
 
 app:
   jwt:
-    secret: 0123456789012345678901234567890123456789012345678901234567890123
-    expiration-ms: 86400000
+    # Dev-only default. The prod profile has no default and refuses to start without JWT_SECRET.
+    secret: ${JWT_SECRET:dev-only-secret-do-not-use-in-production-0123456789}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
+  github:
+    webhook-secret: ${GITHUB_WEBHOOK_SECRET:}
+  realtime:
+    redis-fanout: ${REALTIME_REDIS_FANOUT:true}
+  cache:
+    board-roles-ttl: ${BOARD_ROLES_CACHE_TTL:10m}
+  rate-limit:
+    login-per-minute: ${LOGIN_RATE_LIMIT:10}
+  seed:
+    demo: ${SEED_DEMO:true}
+    password: ${SEED_DEMO_PASSWORD:demo1234}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+server:
+  # Trust X-Forwarded-* from the reverse proxy (client IP for rate limiting, scheme for redirects).
+  forward-headers-strategy: native
+management:
+  server:
+    # Metrics/health on a separate port that is not published publicly.
+    port: ${MANAGEMENT_PORT:8081}
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+  seed:
+    demo: ${SEED_DEMO:false}
